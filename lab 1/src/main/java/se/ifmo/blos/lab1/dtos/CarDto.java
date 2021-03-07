@@ -38,8 +38,7 @@ public class CarDto implements Dto {
   @Size(max = 128)
   private String modelName;
 
-  @CurrentYearOrBefore
-  private Integer year;
+  @CurrentYearOrBefore private Integer year;
 
   @Size(max = 128)
   private String city;

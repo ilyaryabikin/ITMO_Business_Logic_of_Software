@@ -9,18 +9,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.domains.Brand;
 import se.ifmo.blos.lab1.domains.Car;
+import se.ifmo.blos.lab1.domains.User;
 import se.ifmo.blos.lab1.domains.enums.DriveUnitType;
 import se.ifmo.blos.lab1.domains.enums.FuelType;
 import se.ifmo.blos.lab1.domains.enums.GearboxType;
-import se.ifmo.blos.lab1.repositories.CarRepository;
 import se.ifmo.blos.lab1.repositories.BrandRepository;
+import se.ifmo.blos.lab1.repositories.CarRepository;
+import se.ifmo.blos.lab1.repositories.UserRepository;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class DataGenerator implements ApplicationRunner {
+public class CarDataGenerator implements ApplicationRunner {
 
   private final CarRepository carRepository;
   private final BrandRepository brandRepository;
+  private final UserRepository userRepository;
 
   @Override
   @Transactional
@@ -90,6 +93,7 @@ public class DataGenerator implements ApplicationRunner {
                     + "Цветной дисплей\n"
                     + "Электропривод зеркал\n"
                     + "Интерьер: Кожа")
+            .owner(getFirstUser())
             .build(),
         Car.builder()
             .vin("KL1UF756E6B195928")
@@ -176,6 +180,7 @@ public class DataGenerator implements ApplicationRunner {
                     + "• Корректор фар\n"
                     + "• Омыватель фар\n"
                     + "• 2 комплекта ключей")
+            .owner(getFirstUser())
             .build());
   }
 
@@ -199,6 +204,7 @@ public class DataGenerator implements ApplicationRunner {
                 "ЛАДА ГРАНТА в отличном состоянии . Куплена у официального дилера. 63 ПТС, Без ДТП.\n"
                     + "1 собственник. По технической части в идеальном состоянии, двигатель масло не расходует , коробка переключается плавно , Подвеска вся обслужена , автомобиль без вложений.\n"
                     + "Новая зимняя резина. Любые проверки с вашей стороны. За машиной следили, соли не видела. Все расходники менялись вовремя. Ржавчины нет, арки, пороги все живое. За машину не стыдно. Таких машин единицы.")
+            .owner(getSecondUser())
             .build(),
         Car.builder()
             .vin("JHLRE48577C415490")
@@ -215,6 +221,7 @@ public class DataGenerator implements ApplicationRunner {
             .color("White")
             .additionalInfo(
                 "Отс сига два комплекта колес на дисках один год гарантии на авто стоят чехлы салон как новый вся в родной краске подгрев лобового один собственик продажа о т собственника.Покупали машину в 2018г декабрь.Торг у капота")
+            .owner(getSecondUser())
             .build());
   }
 
@@ -313,6 +320,7 @@ public class DataGenerator implements ApplicationRunner {
                     + "– Аудиосистема с цветным 8'' экраном и интеграцией со смартфонами (Apple CarPlay™\n"
                     + "- Два дополнительных высокочастотных динамика\n"
                     + "Интерьер: Ткань Черный")
+            .owner(getFirstUser())
             .build(),
         Car.builder()
             .vin("KNDJC733545301768")
@@ -408,6 +416,15 @@ public class DataGenerator implements ApplicationRunner {
                     + "– Аудиосистема с 5' экраном (Радио\n"
                     + "- Два дополнительных высокочастотных динамика\n"
                     + "Интерьер: Ткань Черный")
+            .owner(getSecondUser())
             .build());
+  }
+
+  public User getFirstUser() {
+    return userRepository.findById(1L).get();
+  }
+
+  public User getSecondUser() {
+    return userRepository.findById(2L).get();
   }
 }

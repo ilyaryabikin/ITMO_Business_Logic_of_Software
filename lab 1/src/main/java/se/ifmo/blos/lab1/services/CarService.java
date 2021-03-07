@@ -2,6 +2,9 @@ package se.ifmo.blos.lab1.services;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.domains.Car;
@@ -22,6 +25,13 @@ public class CarService extends CommonService<Car, UUID, CarDto> {
     super(carRepository, carMapper);
     this.carRepository = carRepository;
     this.carMapper = carMapper;
+  }
+
+  public Page<CarDto> getAllByOwner(
+      final Long ownerId, final Specification<Car> specification, final Pageable pageable) {
+    return carRepository
+        .findAllByOwnerId(ownerId, specification, pageable)
+        .map(carMapper::mapToDto);
   }
 
   @Override

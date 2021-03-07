@@ -52,6 +52,11 @@ public class User implements UserDetails, Persistable<Long> {
   @Column(nullable = false)
   private String password;
 
+  @Size(max = 63)
+  @NotBlank
+  @Column(nullable = false)
+  private String phoneNumber;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.emptyList();

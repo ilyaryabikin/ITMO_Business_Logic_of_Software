@@ -8,18 +8,18 @@ import se.ifmo.blos.lab1.domains.enums.GearboxType;
 
 @Data
 public class CarRequestParameters {
-    private UUID id;
-    private String vin;
-    private Long brandId;
-    private String modelName;
-    private Integer year;
-    private String city;
-    private Double price;
-    private Double mileage;
-    private Integer generation;
-    private DriveUnitType driveUnitType;
-    private FuelType fuelType;
-    private GearboxType gearboxType;
-    private String color;
-    private String additionalInfo;
+  private UUID id;
+  private String vin;
+  private Long brandId;
+  private String modelName;
+  private Integer year;
+  private String city;
+  private Double price;
+  private Double mileage;
+  private Integer generation;
+  private DriveUnitType driveUnitType;
+  private FuelType fuelType;
+  private GearboxType gearboxType;
+  private String color;
+  private String additionalInfo;
 }

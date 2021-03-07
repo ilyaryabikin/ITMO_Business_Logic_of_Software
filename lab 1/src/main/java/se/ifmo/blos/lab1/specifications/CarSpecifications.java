@@ -5,10 +5,10 @@ import static lombok.AccessLevel.PRIVATE;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
-import se.ifmo.blos.lab1.requests.CarRequestParameters;
 import se.ifmo.blos.lab1.domains.Brand_;
 import se.ifmo.blos.lab1.domains.Car;
 import se.ifmo.blos.lab1.domains.Car_;
+import se.ifmo.blos.lab1.requests.CarRequestParameters;
 
 @NoArgsConstructor(access = PRIVATE)
 public class CarSpecifications {
@@ -96,7 +96,11 @@ public class CarSpecifications {
     });
   }
 
-  public static Specification<Car> fromRequest(final CarRequestParameters carRequestParameters) {
+  public static Specification<Car> fromRequest(
+      final @Nullable CarRequestParameters carRequestParameters) {
+    if (carRequestParameters == null) {
+      return Specification.where(null);
+    }
     return Specification.where(withVin(carRequestParameters.getVin()))
         .and(withBrandId(carRequestParameters.getBrandId()))
         .and(withModelName(carRequestParameters.getModelName()))

@@ -3,7 +3,7 @@ package se.ifmo.blos.lab1.domains;
 import static javax.persistence.CascadeType.DETACH;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.REFRESH;
-import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -59,7 +59,7 @@ public class Car implements Persistable<UUID>, Serializable {
   private String vin;
 
   @ManyToOne(
-      fetch = EAGER,
+      fetch = LAZY,
       cascade = {DETACH, MERGE, REFRESH},
       optional = false)
   @JoinColumn(name = "brand_id")
@@ -124,7 +124,7 @@ public class Car implements Persistable<UUID>, Serializable {
   private boolean isSold = false;
 
   @ManyToOne(
-      fetch = EAGER,
+      fetch = LAZY,
       cascade = {DETACH, MERGE, REFRESH},
       optional = false)
   @JoinColumn(name = "owner_id")

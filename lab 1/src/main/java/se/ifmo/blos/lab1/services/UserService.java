@@ -2,11 +2,13 @@ package se.ifmo.blos.lab1.services;
 
 import static java.lang.String.format;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.domains.User;
 import se.ifmo.blos.lab1.dtos.UserDto;
 import se.ifmo.blos.lab1.mappers.UserMapper;
@@ -25,6 +27,18 @@ public class UserService extends CommonService<User, Long, UserDto> implements U
     super(userRepository, userMapper);
     this.userRepository = userRepository;
     this.userMapper = userMapper;
+  }
+
+  @Transactional(readOnly = true)
+  public UserDto getByOwnedCarId(final UUID carId) {
+    final User user =
+        userRepository
+            .findByCarId(carId)
+            .orElseThrow(
+                () ->
+                    new UsernameNotFoundException(
+                        format("Owner for car with id %s was not found.", carId.toString())));
+    return userMapper.mapToDto(user);
   }
 
   @Override

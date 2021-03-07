@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,16 +20,19 @@ import se.ifmo.blos.lab1.domains.enums.GearboxType;
 public class EnumsController {
 
   @GetMapping(path = "/drive-unit-types", produces = APPLICATION_JSON_VALUE)
+  @PreAuthorize("permitAll()")
   public List<DriveUnitType> getDriveUnitTypes() {
     return Arrays.asList(DriveUnitType.values());
   }
 
   @GetMapping(path = "/fuel-types", produces = APPLICATION_JSON_VALUE)
+  @PreAuthorize("permitAll()")
   public List<FuelType> getFuelTypes() {
     return Arrays.asList(FuelType.values());
   }
 
   @GetMapping(path = "/gearbox-types", produces = APPLICATION_JSON_VALUE)
+  @PreAuthorize("permitAll()")
   public List<GearboxType> getGearboxTypes() {
     return Arrays.asList(GearboxType.values());
   }

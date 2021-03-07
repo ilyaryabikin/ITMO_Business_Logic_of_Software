@@ -2,8 +2,8 @@ package se.ifmo.blos.lab1.mappers;
 
 import org.springframework.data.domain.Persistable;
 import org.springframework.stereotype.Component;
-import se.ifmo.blos.lab1.exceptions.IllegalMappingOperationException;
 import se.ifmo.blos.lab1.dtos.Dto;
+import se.ifmo.blos.lab1.exceptions.IllegalMappingOperationException;
 
 @Component
 public interface Mapper<T extends Persistable<?>, D extends Dto> {

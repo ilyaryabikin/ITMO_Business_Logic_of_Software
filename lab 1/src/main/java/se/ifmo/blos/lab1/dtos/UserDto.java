@@ -16,4 +16,7 @@ public class UserDto implements Dto {
 
   @JsonProperty(access = READ_ONLY)
   private String email;
+
+  @JsonProperty(access = READ_ONLY)
+  private String phoneNumber;
 }

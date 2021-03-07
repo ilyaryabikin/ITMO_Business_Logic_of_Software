@@ -12,9 +12,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import se.ifmo.blos.lab1.utils.RestErrorResponse;
 import se.ifmo.blos.lab1.exceptions.ResourceAlreadyExistsException;
 import se.ifmo.blos.lab1.exceptions.ResourceNotFoundException;
+import se.ifmo.blos.lab1.dtos.RestErrorResponse;
 
 @org.springframework.web.bind.annotation.RestControllerAdvice
 @Slf4j

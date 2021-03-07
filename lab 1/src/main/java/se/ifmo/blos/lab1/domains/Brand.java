@@ -48,6 +48,7 @@ public class Brand implements Persistable<Long>, Serializable {
 
   @OneToMany(mappedBy = "brand", fetch = LAZY, cascade = ALL, orphanRemoval = true)
   @Builder.Default
+  @ToString.Exclude
   private List<Car> cars = new ArrayList<>();
 
   public Brand(final String name) {

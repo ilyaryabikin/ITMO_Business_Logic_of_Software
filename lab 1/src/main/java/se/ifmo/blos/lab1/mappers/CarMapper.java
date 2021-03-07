@@ -1,9 +1,9 @@
 package se.ifmo.blos.lab1.mappers;
 
 import org.springframework.stereotype.Component;
-import se.ifmo.blos.lab1.exceptions.IllegalMappingOperationException;
 import se.ifmo.blos.lab1.domains.Car;
 import se.ifmo.blos.lab1.dtos.CarDto;
+import se.ifmo.blos.lab1.exceptions.IllegalMappingOperationException;
 
 @Component("carMapper")
 public class CarMapper implements Mapper<Car, CarDto> {
