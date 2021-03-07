@@ -34,3 +34,6 @@ build/
 
 ### H2 Local Database ###
 db/
+
+### IDEA HTTP requests ###
+*.http
