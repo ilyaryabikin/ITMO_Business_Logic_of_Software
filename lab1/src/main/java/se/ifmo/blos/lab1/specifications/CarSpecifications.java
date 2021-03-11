@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import se.ifmo.blos.lab1.domains.Brand_;
 import se.ifmo.blos.lab1.domains.Car;
 import se.ifmo.blos.lab1.domains.Car_;
+import se.ifmo.blos.lab1.domains.User_;
 import se.ifmo.blos.lab1.requests.CarRequestParameters;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -96,6 +97,24 @@ public class CarSpecifications {
     });
   }
 
+  public static Specification<Car> withSoldStatus(final @Nullable Boolean isSold) {
+    return ((root, query, criteriaBuilder) -> {
+      if (isSold == null) {
+        return criteriaBuilder.conjunction();
+      }
+      return criteriaBuilder.equal(root.get(Car_.IS_SOLD), isSold);
+    });
+  }
+
+  public static Specification<Car> withOwner(final @Nullable Long ownerId) {
+    return ((root, query, criteriaBuilder) -> {
+      if (ownerId == null) {
+        return criteriaBuilder.conjunction();
+      }
+      return criteriaBuilder.equal(root.get(Car_.OWNER).get(User_.ID), ownerId);
+    });
+  }
+
   public static Specification<Car> fromRequest(
       final @Nullable CarRequestParameters carRequestParameters) {
     if (carRequestParameters == null) {
@@ -109,6 +128,7 @@ public class CarSpecifications {
         .and(withPrice(carRequestParameters.getPrice()))
         .and(withMileage(carRequestParameters.getMileage()))
         .and(withGeneration(carRequestParameters.getGeneration()))
-        .and(withColor(carRequestParameters.getColor()));
+        .and(withColor(carRequestParameters.getColor()))
+        .and(withSoldStatus(carRequestParameters.getIsSold()));
   }
 }

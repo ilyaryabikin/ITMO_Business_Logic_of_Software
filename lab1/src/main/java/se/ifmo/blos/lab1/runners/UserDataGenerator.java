@@ -4,6 +4,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,6 +18,7 @@ import se.ifmo.blos.lab1.repositories.UserRepository;
 @Component
 @Order(HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Slf4j
 public class UserDataGenerator implements ApplicationRunner {
 
   private final PasswordEncoder passwordEncoder;
@@ -25,7 +27,12 @@ public class UserDataGenerator implements ApplicationRunner {
   @Override
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
-    userRepository.saveAll(getUsers());
+    for (final var user : getUsers()) {
+      if (!userRepository.existsByEmail(user.getEmail())) {
+        log.info("Saving user={}", user);
+        userRepository.save(user);
+      }
+    }
   }
 
   private List<User> getUsers() {

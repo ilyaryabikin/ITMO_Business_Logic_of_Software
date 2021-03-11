@@ -1,7 +1,11 @@
 package se.ifmo.blos.lab1.runners;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -19,6 +23,7 @@ import se.ifmo.blos.lab1.repositories.UserRepository;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Slf4j
 public class CarDataGenerator implements ApplicationRunner {
 
   private final CarRepository carRepository;
@@ -28,10 +33,19 @@ public class CarDataGenerator implements ApplicationRunner {
   @Override
   @Transactional
   public void run(final ApplicationArguments args) throws Exception {
-    brandRepository.saveAll(getBrands());
-    carRepository.saveAll(getBmwCars());
-    carRepository.saveAll(getLadaCars());
-    carRepository.saveAll(getHyundaiCars());
+    for (final var brand : getBrands()) {
+      if (!brandRepository.existsByName(brand.getName())) {
+        log.info("Saving brand={}", brand);
+        brandRepository.save(brand);
+      }
+    }
+
+    for (final var car : getAllCars()) {
+      if (!carRepository.existsByVin(car.getVin())) {
+        log.info("Saving car={}", car);
+        carRepository.save(car);
+      }
+    }
   }
 
   private List<Brand> getBrands() {
@@ -45,6 +59,12 @@ public class CarDataGenerator implements ApplicationRunner {
         new Brand("Toyota"),
         new Brand("Ford"),
         new Brand("Chevrolet"));
+  }
+
+  private List<Car> getAllCars() {
+    return Stream.of(getBmwCars(), getLadaCars(), getHyundaiCars())
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
   }
 
   private List<Car> getBmwCars() {

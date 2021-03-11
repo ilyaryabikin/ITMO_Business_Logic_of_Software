@@ -44,6 +44,7 @@ public class CarMapper implements Mapper<Car, CarDto> {
         .gearboxType(persistable.getGearboxType())
         .color(persistable.getColor())
         .additionalInfo(persistable.getAdditionalInfo())
+        .isSold(persistable.isSold())
         .build();
   }
 
@@ -85,6 +86,9 @@ public class CarMapper implements Mapper<Car, CarDto> {
     }
     if (dto.getAdditionalInfo() != null) {
       car.setAdditionalInfo(dto.getAdditionalInfo());
+    }
+    if (dto.getIsSold() != null) {
+      car.setSold(dto.getIsSold());
     }
   }
 }

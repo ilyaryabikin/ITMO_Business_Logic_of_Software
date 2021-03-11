@@ -13,9 +13,6 @@ public interface CarRepository extends PersistableRepository<Car, UUID> {
 
   boolean existsByVin(final String vin);
 
-  Page<Car> findAllByOwnerId(
-      final Long userId, final Specification<Car> specification, final Pageable pageable);
-
   @Query("SELECT c FROM cars c WHERE c.isSold = false")
   Page<Car> findAllPublic(final Specification<Car> specification, final Pageable pageable);
 

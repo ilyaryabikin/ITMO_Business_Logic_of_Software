@@ -8,6 +8,7 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.dtos.Dto;
+import se.ifmo.blos.lab1.exceptions.IllegalPropertyUpdateException;
 import se.ifmo.blos.lab1.exceptions.ResourceAlreadyExistsException;
 import se.ifmo.blos.lab1.exceptions.ResourceNotFoundException;
 import se.ifmo.blos.lab1.mappers.Mapper;
@@ -72,7 +73,8 @@ public abstract class CommonService<T extends Persistable<ID>, ID, D extends Dto
   }
 
   @Transactional
-  public D updateFromDto(final D dto, final ID id) throws ResourceNotFoundException {
+  public D updateFromDto(final D dto, final ID id)
+      throws ResourceNotFoundException, IllegalPropertyUpdateException {
     final T persistable = getEntityById(id);
     mapper.updateFromDto(dto, persistable);
     return mapper.mapToDto(persistable);

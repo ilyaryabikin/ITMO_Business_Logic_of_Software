@@ -127,7 +127,7 @@ public class Car implements Persistable<UUID>, Serializable {
       fetch = LAZY,
       cascade = {DETACH, MERGE, REFRESH},
       optional = false)
-  @JoinColumn(name = "owner_id")
+  @JoinColumn(name = "owner_id", nullable = false)
   @ToString.Exclude
   private User owner;
 

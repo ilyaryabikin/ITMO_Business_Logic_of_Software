@@ -1,9 +1,11 @@
 package se.ifmo.blos.lab1.dtos;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 import javax.validation.constraints.DecimalMin;
@@ -63,4 +65,7 @@ public class CarDto implements Dto {
 
   @Size(min = 16, max = 8192)
   private String additionalInfo;
+
+  @JsonInclude(NON_NULL)
+  private Boolean isSold;
 }

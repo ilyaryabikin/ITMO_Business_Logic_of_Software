@@ -22,4 +22,5 @@ public class CarRequestParameters {
   private GearboxType gearboxType;
   private String color;
   private String additionalInfo;
+  private Boolean isSold;
 }
