@@ -55,10 +55,10 @@ public class JwtTokenAuthFilter extends OncePerRequestFilter {
             new UsernamePasswordAuthenticationToken(user, null, jwtUtil.getAuthorities(jwtToken));
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
-    } catch (JwtException e) {
+    } catch (final JwtException e) {
       log.warn("Error handling JWT token: {}", e.getMessage());
       throw e;
-    } catch (UsernameNotFoundException e) {
+    } catch (final UsernameNotFoundException e) {
       log.warn("Username was not found during JWT authentication");
       throw e;
     }

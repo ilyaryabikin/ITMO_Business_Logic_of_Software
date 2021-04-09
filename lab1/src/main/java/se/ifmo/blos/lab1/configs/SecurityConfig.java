@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import se.ifmo.blos.lab1.filters.JwtTokenAuthErrorHandlingFilter;
 import se.ifmo.blos.lab1.filters.JwtTokenAuthFilter;
 import se.ifmo.blos.lab1.utils.JwtUtil;
 
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.addFilterAfter(
             new JwtTokenAuthFilter(userService, jwtUtil),
             UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtTokenAuthErrorHandlingFilter(), JwtTokenAuthFilter.class)
         .csrf()
         .disable()
         .sessionManagement()

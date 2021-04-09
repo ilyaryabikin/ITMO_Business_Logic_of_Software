@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import se.ifmo.blos.lab1.filters.JwtTokenAuthErrorHandlingFilter;
 import se.ifmo.blos.lab1.filters.JwtTokenAuthFilter;
 import se.ifmo.blos.lab1.utils.JwtUtil;
 
@@ -57,6 +58,7 @@ public class SecurityProdConfig extends WebSecurityConfigurerAdapter {
     http.addFilterAfter(
             new JwtTokenAuthFilter(userService, jwtUtil),
             UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtTokenAuthErrorHandlingFilter(), JwtTokenAuthFilter.class)
         .csrf()
         .disable()
         .sessionManagement()
