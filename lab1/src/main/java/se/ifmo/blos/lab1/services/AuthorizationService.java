@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.ifmo.blos.lab1.domains.User;
 import se.ifmo.blos.lab1.dtos.AuthorizationDto;
 import se.ifmo.blos.lab1.utils.JwtUtil;
 
@@ -25,6 +26,7 @@ public class AuthorizationService {
             new UsernamePasswordAuthenticationToken(
                 authorizationDto.getUsername(), authorizationDto.getPassword()));
     final String token = jwtUtil.generateJwtToken(authentication);
+    authorizationDto.setId(((User) authentication.getPrincipal()).getId());
     authorizationDto.setToken(token);
     authorizationDto.setExpiresAt(jwtUtil.getExpirationDate(token).toInstant());
     return authorizationDto;

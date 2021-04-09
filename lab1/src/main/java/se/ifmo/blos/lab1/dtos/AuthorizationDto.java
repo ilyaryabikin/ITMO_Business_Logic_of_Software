@@ -23,6 +23,10 @@ public class AuthorizationDto implements Dto {
 
   private static final long serialVersionUID = -2137824490351989146L;
 
+  @JsonProperty(access = READ_ONLY)
+  @JsonInclude(NON_NULL)
+  private Long id;
+
   @NotBlank
   @JsonProperty(access = WRITE_ONLY)
   @JsonInclude(NON_NULL)
