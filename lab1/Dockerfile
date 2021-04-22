@@ -1,11 +1,13 @@
-FROM bellsoft/liberica-openjre-debian:11.0.9.1-1
+FROM bellsoft/liberica-openjre-alpine:11
 
 ARG APPLICATION_ARTIFACT_NAME
 ARG APPLICATION_VERSION
 ARG DATABASE_HOST
 ARG DATABASE_PORT
 
-RUN apt-get update && apt-get install -y wait-for-it
+RUN apk add --no-cache bash git
+RUN git clone https://github.com/vishnubob/wait-for-it.git
+RUN chmod +x /wait-for-it/wait-for-it.sh
 
 COPY target/${APPLICATION_ARTIFACT_NAME}-${APPLICATION_VERSION}.jar /${APPLICATION_ARTIFACT_NAME}.jar
 
