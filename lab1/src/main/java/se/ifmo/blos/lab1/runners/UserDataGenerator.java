@@ -26,7 +26,7 @@ public class UserDataGenerator implements ApplicationRunner {
 
   @Override
   @Transactional
-  public void run(ApplicationArguments args) throws Exception {
+  public void run(ApplicationArguments args) {
     for (final var user : getUsers()) {
       if (!userRepository.existsByEmail(user.getEmail())) {
         log.info("Saving user={}", user);

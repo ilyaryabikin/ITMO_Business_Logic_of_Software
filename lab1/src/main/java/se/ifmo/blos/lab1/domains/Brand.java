@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import org.springframework.data.domain.Persistable;
 @ToString(doNotUseGetters = true)
 public class Brand implements Persistable<Long>, Serializable {
 
-  private static final long serialVersionUID = -5005727408430635551L;
+  @Serial private static final long serialVersionUID = -5005727408430635551L;
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
@@ -73,14 +74,6 @@ public class Brand implements Persistable<Long>, Serializable {
     cars.add(car);
     car.setBrand(this);
   }
-
-  /*public void setCars(final List<Car> cars) {
-    if (cars == null) {
-      this.cars = new ArrayList<>();
-      return;
-    }
-    this.cars = cars;
-  }*/
 
   public void addCars(final Iterable<Car> cars) {
     for (final var car : cars) {

@@ -19,7 +19,7 @@ public class CurrentYearOrBeforeValidator
       return true;
     }
 
-    final ZonedDateTime now = ZonedDateTime.now(UTC);
+    final var now = ZonedDateTime.now(UTC);
     final int currentYear = now.getYear();
     return currentYear >= value;
   }

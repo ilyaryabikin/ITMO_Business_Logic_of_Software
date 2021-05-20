@@ -1,0 +1,89 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.0-RC1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.diffplug.spotless' version '5.12.5'
+}
+
+group = 'se.ifmo.blos'
+version = '1.0'
+sourceCompatibility = '16'
+targetCompatibility = '16'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/milestone'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.8'
+    implementation 'org.springdoc:springdoc-openapi-security:1.5.8'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'io.jsonwebtoken:jjwt-api:0.11.2'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.springframework:spring-context-indexer'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    testCompileOnly 'org.projectlombok:lombok'
+
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    modules {
+        module('org.springframework.boot:spring-boot-starter-tomcat') {
+            replacedBy('org.springframework.boot:spring-boot-starter-undertow', 'Replace Tomcat with Undertow')
+        }
+        module('org.springframework.boot:spring-boot-starter-logging') {
+            replacedBy('org.springframework.boot:spring-boot-starter-log4j2', 'Replace Logback with Log4j2')
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+springBoot {
+    buildInfo()
+}
+
+spotless {
+    encoding 'UTF-8'
+    java {
+        removeUnusedImports()
+        googleJavaFormat('1.10.0')
+    }
+    format 'misc', {
+        target '*.gradle', '*.md', '**/*.properties', '.gitignore', 'Dockerfile', 'docker-compose.yml'
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+}

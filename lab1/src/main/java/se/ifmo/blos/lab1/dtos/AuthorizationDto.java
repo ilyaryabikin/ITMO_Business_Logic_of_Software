@@ -8,6 +8,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serial;
 import java.time.Instant;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AuthorizationDto implements Dto {
 
-  private static final long serialVersionUID = -2137824490351989146L;
+  @Serial private static final long serialVersionUID = -2137824490351989146L;
 
   @JsonProperty(access = READ_ONLY)
   @JsonInclude(NON_NULL)

@@ -1,5 +1,7 @@
 package se.ifmo.blos.lab1.configs;
 
+import static org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion.$2B;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +12,6 @@ public class PasswordEncoderConfig {
 
   @Bean
   public PasswordEncoder defaultPasswordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder($2B, 12);
   }
 }

@@ -2,6 +2,7 @@ package se.ifmo.blos.lab1.domains;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @ToString(doNotUseGetters = true)
 public class User implements UserDetails, Persistable<Long> {
 
-  private static final long serialVersionUID = -4818628192237463756L;
+  @Serial private static final long serialVersionUID = -4818628192237463756L;
 
   @Id
   @GeneratedValue(strategy = IDENTITY)

@@ -5,6 +5,7 @@ import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.FetchType.LAZY;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -48,7 +49,7 @@ import se.ifmo.blos.lab1.domains.enums.GearboxType;
 @ToString(doNotUseGetters = true)
 public class Car implements Persistable<UUID>, Serializable {
 
-  private static final long serialVersionUID = 6233229146413899605L;
+  @Serial private static final long serialVersionUID = 6233229146413899605L;
 
   @Id @GeneratedValue @NotNull @EqualsAndHashCode.Include private UUID id;
 

@@ -37,8 +37,8 @@ public class JwtUtil {
   public String generateJwtToken(final Authentication authentication) {
     final var user = (UserDetails) authentication.getPrincipal();
 
-    final Instant issueDate = Instant.now();
-    final Instant expirationDate = issueDate.plus(jwtProperties.getExpirationHours(), HOURS);
+    final var issueDate = Instant.now();
+    final var expirationDate = issueDate.plus(jwtProperties.getExpirationHours(), HOURS);
 
     final String jwtToken =
         Jwts.builder()
@@ -63,7 +63,7 @@ public class JwtUtil {
 
   @SuppressWarnings("unchecked")
   public Collection<GrantedAuthority> getAuthorities(final String token) {
-    final Claims claims = getAllClaimsFromToken(token);
+    final var claims = getAllClaimsFromToken(token);
     final var authorities = (List<String>) claims.get(jwtProperties.getAuthoritiesClaim());
     return authorities.stream()
         .map(SimpleGrantedAuthority::new)
@@ -79,7 +79,7 @@ public class JwtUtil {
   }
 
   public boolean isTokenExpired(final String token) {
-    final Date expirationTime = getExpirationDate(token);
+    final var expirationTime = getExpirationDate(token);
     return expirationTime.before(new Date());
   }
 

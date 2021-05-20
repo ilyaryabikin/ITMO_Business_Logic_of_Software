@@ -1,8 +1,10 @@
 package se.ifmo.blos.lab1.exceptions;
 
+import java.io.Serial;
+
 public class IllegalMappingOperationException extends RuntimeException {
 
-  private static final long serialVersionUID = 4502144543399649502L;
+  @Serial private static final long serialVersionUID = 4502144543399649502L;
 
   public IllegalMappingOperationException() {
     super();

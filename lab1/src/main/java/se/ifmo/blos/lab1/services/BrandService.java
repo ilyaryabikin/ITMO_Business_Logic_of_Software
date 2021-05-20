@@ -1,28 +1,111 @@
 package se.ifmo.blos.lab1.services;
 
+import static java.lang.String.format;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.domains.Brand;
 import se.ifmo.blos.lab1.dtos.BrandDto;
+import se.ifmo.blos.lab1.exceptions.IllegalPropertyUpdateException;
+import se.ifmo.blos.lab1.exceptions.ResourceAlreadyExistsException;
+import se.ifmo.blos.lab1.exceptions.ResourceNotFoundException;
 import se.ifmo.blos.lab1.mappers.BrandMapper;
 import se.ifmo.blos.lab1.repositories.BrandRepository;
 
 @Service("brandService")
-public class BrandService extends CommonService<Brand, Long, BrandDto> {
-
-  private static final String RESOURCE_NAME = "Brand";
+@Transactional(
+    rollbackFor = {ResourceNotFoundException.class, ResourceAlreadyExistsException.class})
+public class BrandService implements CommonService<Brand, Long, BrandDto> {
 
   private final BrandRepository brandRepository;
   private final BrandMapper brandMapper;
 
   @Autowired
   public BrandService(final BrandRepository brandRepository, final BrandMapper brandMapper) {
-    super(brandRepository, brandMapper);
     this.brandRepository = brandRepository;
     this.brandMapper = brandMapper;
+  }
+
+  @Override
+  @Transactional
+  public BrandDto createFromDto(final BrandDto dto) throws ResourceAlreadyExistsException {
+    if (isAlreadyExists(dto)) {
+      throw new ResourceAlreadyExistsException(
+          format("Brand with name %s already exists.", dto.getName()));
+    }
+    final var toPersist = brandMapper.mapToPersistable(dto);
+    final var persisted = brandRepository.save(toPersist);
+    return brandMapper.mapToDto(persisted);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<Brand> getAllEntities(final Pageable pageable) {
+    return brandRepository.findAll(pageable);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<Brand> getAllEntities(
+      final Specification<Brand> specification, final Pageable pageable) {
+    return brandRepository.findAll(specification, pageable);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<BrandDto> getAllDtos(final Pageable pageable) {
+    return getAllEntities(pageable).map(brandMapper::mapToDto);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<BrandDto> getAllDtos(
+      final Specification<Brand> specification, final Pageable pageable) {
+    return getAllEntities(specification, pageable).map(brandMapper::mapToDto);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Brand getEntityById(final Long id) throws ResourceNotFoundException {
+    return brandRepository
+        .findById(id)
+        .orElseThrow(
+            () -> new ResourceNotFoundException(format("Brand with id %d was not found.", id)));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public BrandDto getDtoById(final Long id) throws ResourceNotFoundException {
+    return brandMapper.mapToDto(getEntityById(id));
+  }
+
+  @Override
+  @Transactional
+  public BrandDto updateFromDto(final BrandDto dto, final Long id)
+      throws ResourceNotFoundException, IllegalPropertyUpdateException {
+    final var persistable = getEntityById(id);
+    brandMapper.updateFromDto(dto, persistable);
+    return brandMapper.mapToDto(persistable);
+  }
+
+  @Override
+  @Transactional
+  public void removeById(final Long id) throws ResourceNotFoundException {
+    final var persistable = getEntityById(id);
+    brandRepository.delete(persistable);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean isAlreadyExists(final BrandDto dto) {
+    if (dto.getName() == null) {
+      return false;
+    }
+    return brandRepository.existsByName(dto.getName());
   }
 
   @Transactional(readOnly = true)
@@ -33,19 +116,5 @@ public class BrandService extends CommonService<Brand, Long, BrandDto> {
   @Transactional(readOnly = true)
   public Page<BrandDto> getAllDtosWithName(final String name, final Pageable pageable) {
     return getAllEntitiesWithName(name, pageable).map(brandMapper::mapToDto);
-  }
-
-  @Transactional(readOnly = true)
-  @Override
-  public boolean isAlreadyExists(final BrandDto dto) {
-    if (dto.getName() == null) {
-      return false;
-    }
-    return brandRepository.existsByName(dto.getName());
-  }
-
-  @Override
-  protected String getResourceName() {
-    return RESOURCE_NAME;
   }
 }

@@ -3,6 +3,7 @@ package se.ifmo.blos.lab1.dtos;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serial;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDto implements Dto {
 
-  private static final long serialVersionUID = 8870747020716633775L;
+  @Serial private static final long serialVersionUID = 8870747020716633775L;
 
   @JsonProperty(access = READ_ONLY)
   private String email;

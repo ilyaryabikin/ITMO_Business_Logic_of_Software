@@ -1,8 +1,15 @@
-HELP.md
+### MAVEN BUILD FILES ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+### GRADLE BUILD FILES ###
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### STS ###
 .apt_generated
@@ -25,9 +32,6 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
@@ -37,3 +41,7 @@ db/
 
 ### IDEA HTTP requests ###
 *.http
+
+### MISC ###
+HELP.md
+*report*

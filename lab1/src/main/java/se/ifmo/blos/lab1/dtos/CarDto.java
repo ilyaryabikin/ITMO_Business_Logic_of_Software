@@ -7,6 +7,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serial;
 import java.util.UUID;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -26,7 +27,7 @@ import se.ifmo.blos.lab1.domains.enums.GearboxType;
 @Builder
 public class CarDto implements Dto {
 
-  private static final long serialVersionUID = -2810471298730123798L;
+  @Serial private static final long serialVersionUID = -2810471298730123798L;
 
   @JsonProperty(access = READ_ONLY)
   @JsonFormat(shape = STRING)

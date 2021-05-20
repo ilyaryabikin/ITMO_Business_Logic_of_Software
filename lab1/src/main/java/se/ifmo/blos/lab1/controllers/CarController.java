@@ -68,7 +68,7 @@ public class CarController {
   @ResponseStatus(CREATED)
   public CarDto createCar(final @PathVariable Long userId, final @RequestBody @Valid CarDto carDto)
       throws ResourceAlreadyExistsException {
-    final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    final var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return carService.createFromDtoWithOwner(user, carDto);
   }
 

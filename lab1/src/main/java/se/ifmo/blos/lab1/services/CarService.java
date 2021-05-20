@@ -12,56 +12,111 @@ import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab1.domains.Car;
 import se.ifmo.blos.lab1.domains.User;
 import se.ifmo.blos.lab1.dtos.CarDto;
+import se.ifmo.blos.lab1.exceptions.IllegalPropertyUpdateException;
 import se.ifmo.blos.lab1.exceptions.ResourceAlreadyExistsException;
+import se.ifmo.blos.lab1.exceptions.ResourceNotFoundException;
 import se.ifmo.blos.lab1.mappers.CarMapper;
 import se.ifmo.blos.lab1.repositories.CarRepository;
 import se.ifmo.blos.lab1.specifications.CarSpecifications;
 
 @Service("carService")
-public class CarService extends CommonService<Car, UUID, CarDto> {
-
-  private static final String RESOURCE_NAME = "Car";
+@Transactional(
+    rollbackFor = {ResourceNotFoundException.class, ResourceAlreadyExistsException.class})
+public class CarService implements CommonService<Car, UUID, CarDto> {
 
   private final CarRepository carRepository;
   private final CarMapper carMapper;
 
   @Autowired
   public CarService(final CarRepository carRepository, final CarMapper carMapper) {
-    super(carRepository, carMapper);
     this.carRepository = carRepository;
     this.carMapper = carMapper;
   }
 
-  /*public Page<Car> getAllPublicEntities(
-      final Specification<Car> specification, final Pageable pageable) {
-    return carRepository.findAllPublic(specification, pageable);
+  @Override
+  @Transactional
+  public CarDto createFromDto(final CarDto dto) throws ResourceAlreadyExistsException {
+    if (isAlreadyExists(dto)) {
+      throw new ResourceAlreadyExistsException(
+          format("Car with vin %s already exists.", dto.getVin()));
+    }
+    final var toPersist = carMapper.mapToPersistable(dto);
+    final var persisted = carRepository.save(toPersist);
+    return carMapper.mapToDto(persisted);
   }
 
-  public Page<Car> getAllPublicOrPersonalEntities(
-      final Long ownerId, final Specification<Car> specification, final Pageable pageable) {
-    return carRepository.findAllPublicOrPersonal(ownerId, specification, pageable);
+  @Override
+  @Transactional(readOnly = true)
+  public Page<Car> getAllEntities(final Pageable pageable) {
+    return carRepository.findAll(pageable);
   }
 
-  public Page<CarDto> getAllPublicDtos(
-      final Specification<Car> specification, final Pageable pageable) {
-    return getAllPublicEntities(specification, pageable).map(carMapper::mapToDto);
+  @Override
+  @Transactional(readOnly = true)
+  public Page<Car> getAllEntities(final Specification<Car> specification, final Pageable pageable) {
+    return carRepository.findAll(specification, pageable);
   }
 
-  public Page<CarDto> getAllPublicOrPersonalDtos(
-      final Long ownerId, final Specification<Car> specification, final Pageable pageable) {
+  @Override
+  @Transactional(readOnly = true)
+  public Page<CarDto> getAllDtos(final Pageable pageable) {
+    return getAllEntities(pageable).map(carMapper::mapToDto);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<CarDto> getAllDtos(final Specification<Car> specification, final Pageable pageable) {
+    return getAllEntities(specification, pageable).map(carMapper::mapToDto);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Car getEntityById(final UUID id) throws ResourceNotFoundException {
     return carRepository
-        .findAllPublicOrPersonal(ownerId, specification, pageable)
-        .map(carMapper::mapToDto);
-  }*/
+        .findById(id)
+        .orElseThrow(
+            () -> new ResourceNotFoundException(format("Car with id %s was not found.", id)));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CarDto getDtoById(final UUID id) throws ResourceNotFoundException {
+    return carMapper.mapToDto(getEntityById(id));
+  }
+
+  @Override
+  @Transactional
+  public CarDto updateFromDto(final CarDto dto, final UUID id)
+      throws ResourceNotFoundException, IllegalPropertyUpdateException {
+    final var persistable = getEntityById(id);
+    carMapper.updateFromDto(dto, persistable);
+    return carMapper.mapToDto(persistable);
+  }
+
+  @Override
+  @Transactional
+  public void removeById(final UUID id) throws ResourceNotFoundException {
+    final var persistable = getEntityById(id);
+    carRepository.delete(persistable);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean isAlreadyExists(final CarDto dto) {
+    if (dto.getVin() == null) {
+      return false;
+    }
+    return carRepository.existsByVin(dto.getVin());
+  }
 
   @Transactional
   public CarDto createFromDtoWithOwner(final User owner, final CarDto carDto)
       throws ResourceAlreadyExistsException {
     if (isAlreadyExists(carDto)) {
       throw new ResourceAlreadyExistsException(
-          format("%s with same identity already exists.", getResourceName()));
+          format("Car with vin %s already exists.", carDto.getVin()));
     }
-    final Car car = carMapper.mapToPersistable(carDto);
+    final var car = carMapper.mapToPersistable(carDto);
     car.setOwner(owner);
     return carMapper.mapToDto(carRepository.save(car));
   }
@@ -72,19 +127,5 @@ public class CarService extends CommonService<Car, UUID, CarDto> {
     final Specification<Car> withOwnerSpecification =
         specification.and(CarSpecifications.withOwner(ownerId));
     return carRepository.findAll(withOwnerSpecification, pageable).map(carMapper::mapToDto);
-  }
-
-  @Override
-  protected String getResourceName() {
-    return RESOURCE_NAME;
-  }
-
-  @Transactional(readOnly = true)
-  @Override
-  public boolean isAlreadyExists(final CarDto dto) {
-    if (dto.getVin() == null) {
-      return false;
-    }
-    return carRepository.existsByVin(dto.getVin());
   }
 }
