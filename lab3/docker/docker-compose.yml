@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+
+  artemis:
+    build:
+      context: .
+      dockerfile: dockerfile-artemis
+      args:
+        ACTIVEMQ_ARTEMIS_VERSION: ${ACTIVEMQ_ARTEMIS_VERSION}
+    env_file:
+      - artemis.env
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+      - "61613:61613"
+
+  mailhost:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"

@@ -1,0 +1,15 @@
+FROM adoptopenjdk/openjdk16-openj9:alpine-jre
+
+ARG APPLICATION_ARTIFACT_NAME
+ARG DATABASE_HOST
+ARG DATABASE_PORT
+
+COPY ../core/build/libs/${APPLICATION_ARTIFACT_NAME}.jar /${APPLICATION_ARTIFACT_NAME}.jar
+COPY ./assets/wait-for /wait-for
+RUN chmod+x ./wait-for
+
+ENV APP_ARTIFACT=${APPLICATION_ARTIFACT_NAME}
+ENV DB_HOST=${DATABASE_HOST}
+ENV DB_PORT=${DATABASE_PORT}
+
+ENTRYPOINT exec ./wait-for ${DB_HOST}:${DB_PORT} -- java -jar /${APP_ARTIFACT}.jar

@@ -1,0 +1,25 @@
+import java.nio.charset.StandardCharsets
+
+plugins {
+    id 'java'
+    id 'com.diffplug.spotless' version '5.12.5'
+}
+
+spotless {
+    encoding StandardCharsets.UTF_8.name()
+    java {
+        target '**/src/*/java/**/*.java'
+        removeUnusedImports()
+        googleJavaFormat('1.10.0')
+    }
+    format 'misc', {
+        target '**/*.gradle', '**/*.md', '**/*.properties', '.gitattributes', '**/.gitignore', '**/Dockerfile', '**/docker-compose.yml'
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+}
+
+allprojects {
+    group 'se.ifmo.blos'
+}

@@ -1,0 +1,6 @@
+rootProject.name = 'root'
+include 'lab1',
+        'lab2:core',
+        'lab2:external',
+        'lab3:core',
+        'lab3:external'
