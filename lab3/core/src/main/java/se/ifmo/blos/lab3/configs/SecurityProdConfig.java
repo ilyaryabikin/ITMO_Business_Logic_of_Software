@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.jaas.AbstractJaasAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,7 +32,7 @@ import se.ifmo.blos.lab3.utils.JwtUtil;
 public class SecurityProdConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userService;
-  private final PasswordEncoder defaultPasswordEncoder;
+  private final AbstractJaasAuthenticationProvider jaasAuthenticationProvider;
   private final JwtUtil jwtUtil;
 
   @Bean
@@ -58,7 +58,8 @@ public class SecurityProdConfig extends WebSecurityConfigurerAdapter {
     http.addFilterAfter(
             new JwtTokenAuthFilter(userService, jwtUtil),
             UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(new JwtTokenAuthErrorHandlingFilter(), JwtTokenAuthFilter.class)
+        .addFilterBefore(
+            new JwtTokenAuthErrorHandlingFilter(), UsernamePasswordAuthenticationFilter.class)
         .csrf()
         .disable()
         .sessionManagement()
@@ -73,6 +74,6 @@ public class SecurityProdConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userService).passwordEncoder(defaultPasswordEncoder);
+    auth.authenticationProvider(jaasAuthenticationProvider);
   }
 }

@@ -62,7 +62,7 @@ public class CreditController {
   }
 
   @PostMapping(
-      path = "users/{userId}/credits",
+      path = "/users/{userId}/credits",
       consumes = APPLICATION_JSON_VALUE,
       produces = APPLICATION_JSON_VALUE)
   @PreAuthorize("isAuthenticated() and authentication.principal.id == #userId")
@@ -75,7 +75,7 @@ public class CreditController {
     return creditService.createCreditRequest(applicant, creditDto);
   }
 
-  @PostMapping(path = "credits/{id}/accept", produces = APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/credits/{id}/accept", produces = APPLICATION_JSON_VALUE)
   @PreAuthorize("isAuthenticated() and hasRole('ROLE_MANAGER')")
   public CreditDto updateCar(final @PathVariable UUID id) throws ResourceNotFoundException {
     final var manager =

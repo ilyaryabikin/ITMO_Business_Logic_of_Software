@@ -126,8 +126,9 @@ COPY --from=builder "/var/lib/artemis/etc" "/var/lib/artemis/etc-backup"
 RUN ln -s "/opt/apache-artemis-${ACTIVEMQ_ARTEMIS_VERSION}" /opt/apache-artemis
 RUN chown -R artemis.artemis /var/lib/artemis
 
-COPY assets/semver2.sh /usr/local/bin/semver
-COPY assets/merge.xslt /opt/assets
+RUN mkdir /opt/assets
+COPY ./assets/semver2.sh /usr/local/bin/semver
+COPY ./assets/merge.xslt /opt/assets/merge.xslt
 
 # Web Server
 EXPOSE 8161

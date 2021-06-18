@@ -14,7 +14,7 @@ public class ExternalServiceConfig {
     return restTemplateBuilder
         .setConnectTimeout(Duration.ofSeconds(20))
         .setReadTimeout(Duration.ofSeconds(30))
-        .rootUri("http://localhost:8090/")
+        .rootUri("http://core:8090/")
         .build();
   }
 }

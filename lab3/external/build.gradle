@@ -1,3 +1,10 @@
 plugins {
     id 'spring-app'
 }
+
+task copyJar {
+    copy {
+        from 'build/libs/external.jar'
+        into '../docker'
+    }
+}

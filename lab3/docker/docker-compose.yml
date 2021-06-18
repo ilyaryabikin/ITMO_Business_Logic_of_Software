@@ -10,6 +10,8 @@ services:
         ACTIVEMQ_ARTEMIS_VERSION: ${ACTIVEMQ_ARTEMIS_VERSION}
     env_file:
       - artemis.env
+    volumes:
+      - ./assets/artemis-override:/var/lib/artemis/etc-override
     ports:
       - "8161:8161"
       - "61616:61616"
@@ -20,3 +22,4 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
+

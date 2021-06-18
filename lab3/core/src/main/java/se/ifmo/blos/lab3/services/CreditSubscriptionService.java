@@ -63,8 +63,7 @@ public class CreditSubscriptionService {
     creditSubscriptionRepository.delete(subscription);
   }
 
-  @JmsListener(destination = QUEUE_DESTINATION, subscription = "core1")
-  @Transactional
+  @JmsListener(destination = QUEUE_DESTINATION)
   public void sendNotifications(
       final ActiveMQBytesMessage message, final @Payload CreditNotificationDto notificationDto) {
     log.debug("Received message = {} with payload = {}", message, notificationDto);

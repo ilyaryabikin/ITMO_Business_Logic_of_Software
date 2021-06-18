@@ -24,3 +24,10 @@ dependencies {
 
     annotationProcessor 'org.hibernate:hibernate-jpamodelgen'
 }
+
+task copyJar {
+    copy {
+        from 'build/libs/core.jar'
+        into '../docker'
+    }
+}
