@@ -65,8 +65,20 @@ public class UserDataGenerator implements ApplicationRunner {
             .role(ROLE_ADMIN)
             .build(),
         User.builder()
-            .email("manager@email.com")
-            .password(passwordEncoder.encode("manager"))
+            .email("manager1@email.com")
+            .password(passwordEncoder.encode("manager1pass"))
+            .phoneNumber("+79211679665")
+            .role(ROLE_MANAGER)
+            .build(),
+        User.builder()
+            .email("manager2@email.com")
+            .password(passwordEncoder.encode("manager2pass"))
+            .phoneNumber("+79211679665")
+            .role(ROLE_MANAGER)
+            .build(),
+        User.builder()
+            .email("manager3@email.com")
+            .password(passwordEncoder.encode("manager3pass"))
             .phoneNumber("+79211679665")
             .role(ROLE_MANAGER)
             .build());

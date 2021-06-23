@@ -74,8 +74,6 @@ RUN sed -i "s/logger.handlers=.*/logger.handlers=CONSOLE/g" logging.properties
 # Edit some log levels
 # RUN sed -i "s/org.apache.activemq.artemis.core.server.level=INFO/org.apache.activemq.artemis.core.server.level=DEBUG/g" logging.properties
 RUN sed -i "s/logger.org.apache.activemq.artemis.jms.level=INFO/logger.org.apache.activemq.artemis.jms.level=DEBUG/g" logging.properties
-# RUN sed -i "/loggers=.*/s/$/,org.apache.activemq.artemis.core.protocol.stomp.StompConnection/" logging.properties
-RUN sed -i "$ a logger.org.apache.activemq.artemis.core.protocol.stomp.StompConnection=DEBUG" logging.properties
 
 # --java-options doesn't seem to work across the board on all versions adding them manually
 RUN sed -i "s/JAVA_ARGS=\"/JAVA_ARGS=\"-Djava.net.preferIPv4Addresses=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=2 /g" ../etc/artemis.profile

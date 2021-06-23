@@ -17,7 +17,7 @@ public class SendCreditNotificationRequestJobConfig {
     final var sendCreditNotificationRequestJobDetail = new JobDetailFactoryBean();
     sendCreditNotificationRequestJobDetail.setJobClass(SendCreditNotificationRequestJob.class);
     sendCreditNotificationRequestJobDetail.setDurability(true);
-    sendCreditNotificationRequestJobDetail.setJobDataAsMap(Map.of("destination", "/queue/credits"));
+    sendCreditNotificationRequestJobDetail.setJobDataAsMap(Map.of("destination", "credits"));
     return sendCreditNotificationRequestJobDetail;
   }
 

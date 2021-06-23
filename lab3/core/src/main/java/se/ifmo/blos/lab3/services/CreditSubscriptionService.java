@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.ifmo.blos.lab3.domains.CreditSubscription;
 import se.ifmo.blos.lab3.dtos.CreditNotificationDto;
+import se.ifmo.blos.lab3.exceptions.ResourceAlreadyExistsException;
 import se.ifmo.blos.lab3.exceptions.ResourceNotFoundException;
 import se.ifmo.blos.lab3.repositories.CreditSubscriptionRepository;
 import se.ifmo.blos.lab3.repositories.UserRepository;
@@ -23,14 +24,14 @@ import se.ifmo.blos.lab3.repositories.UserRepository;
 @Slf4j
 public class CreditSubscriptionService {
 
-  private static final String QUEUE_DESTINATION = "/queue/credits";
+  private static final String QUEUE_DESTINATION = "credits";
 
   private final CreditSubscriptionRepository creditSubscriptionRepository;
   private final UserRepository userRepository;
   private final JavaMailSender mailSender;
 
   @Transactional
-  public void createSubscription(final Long creditManagerId) throws ResourceNotFoundException {
+  public void createSubscription(final Long creditManagerId) throws ResourceNotFoundException, ResourceAlreadyExistsException {
     final var creditManager =
         userRepository
             .findById(creditManagerId)
@@ -38,6 +39,12 @@ public class CreditSubscriptionService {
                 () ->
                     new ResourceNotFoundException(
                         format("Credit manager with id %d was not found", creditManagerId)));
+    final var optionalSubscription =
+        creditSubscriptionRepository.findBySubscriberId(creditManagerId);
+    if (optionalSubscription.isPresent()) {
+      throw new ResourceAlreadyExistsException(
+          format("User with id %d already subscribed to notifications", creditManagerId));
+    }
     final var subscription = new CreditSubscription();
     subscription.setSubscriber(creditManager);
     creditSubscriptionRepository.save(subscription);
@@ -45,13 +52,12 @@ public class CreditSubscriptionService {
 
   @Transactional
   public void removeSubscription(final Long creditManagerId) throws ResourceNotFoundException {
-    final var creditManager =
-        userRepository
-            .findById(creditManagerId)
-            .orElseThrow(
-                () ->
-                    new ResourceNotFoundException(
-                        format("User with id %d was not found", creditManagerId)));
+    userRepository
+        .findById(creditManagerId)
+        .orElseThrow(
+            () ->
+                new ResourceNotFoundException(
+                    format("User with id %d was not found", creditManagerId)));
     final var subscription =
         creditSubscriptionRepository
             .findBySubscriberId(creditManagerId)

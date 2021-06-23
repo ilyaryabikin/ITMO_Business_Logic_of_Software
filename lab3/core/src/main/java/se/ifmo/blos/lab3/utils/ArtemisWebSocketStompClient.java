@@ -58,7 +58,7 @@ public class ArtemisWebSocketStompClient {
     final var headers = new StompHeaders();
     headers.setDestination(destination);
     headers.add("JMSType", creditNotificationDto.getClass().getCanonicalName());
-    headers.add("consumer-window-size", "0");
+    headers.add("destination-type", "ANYCAST");
     final var receiptable = session.send(headers, creditNotificationDto);
 
     log.debug("STOMP message sent");
@@ -66,7 +66,7 @@ public class ArtemisWebSocketStompClient {
     receiptable.addReceiptTask(() -> log.debug("STOMP receipt received"));
   }
 
-  private class SessionHandler extends StompSessionHandlerAdapter {
+  private static class SessionHandler extends StompSessionHandlerAdapter {
 
     @Override
     public void handleTransportError(final StompSession session, final Throwable exception) {

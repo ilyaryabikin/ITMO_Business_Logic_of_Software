@@ -87,7 +87,7 @@ public class CreditController {
   @PreAuthorize(
       "isAuthenticated() and authentication.principal.id == #userId and hasRole('ROLE_MANAGER')")
   @ResponseStatus(NO_CONTENT)
-  public void subscribe(final @PathVariable Long userId) throws ResourceNotFoundException {
+  public void subscribe(final @PathVariable Long userId) throws ResourceNotFoundException, ResourceAlreadyExistsException {
     creditSubscriptionService.createSubscription(userId);
   }
 
