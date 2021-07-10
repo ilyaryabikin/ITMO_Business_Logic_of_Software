@@ -1,0 +1,5 @@
+FROM adoptopenjdk/openjdk16-openj9:alpine-jre
+
+COPY external/build/libs/external.jar /external.jar
+
+ENTRYPOINT exec java -jar /external.jar

@@ -14,24 +14,12 @@ services:
     ports:
       - "${PG_PORT}:5432"
 
-  adminer:
-    image: adminer:4-standalone
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      ADMINER_DESIGN: nette
-      ADMINER_DEFAULT_SERVER: postgres
-    ports:
-    - "${ADMINER_PORT}:8080"
-
   app:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         APPLICATION_ARTIFACT_NAME: ${APP_NAME}
-        APPLICATION_VERSION: ${APP_VERSION}
         DATABASE_HOST: ${PG_HOST}
         DATABASE_PORT: ${PG_PORT}
     depends_on:
