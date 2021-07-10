@@ -58,8 +58,7 @@ public class SecurityProdConfig extends WebSecurityConfigurerAdapter {
     http.addFilterAfter(
             new JwtTokenAuthFilter(userService, jwtUtil),
             UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(
-            new JwtTokenAuthErrorHandlingFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtTokenAuthErrorHandlingFilter(), JwtTokenAuthFilter.class)
         .csrf()
         .disable()
         .sessionManagement()
