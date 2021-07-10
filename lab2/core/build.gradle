@@ -8,15 +8,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jta-atomikos'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.8'
-    implementation 'org.springdoc:springdoc-openapi-security:1.5.8'
+    implementation "org.springdoc:springdoc-openapi-ui:${rootProject.ext.openapiVersion}"
+    implementation "org.springdoc:springdoc-openapi-security:${rootProject.ext.openapiVersion}"
 
-    compileOnly 'io.jsonwebtoken:jjwt-api:0.11.2'
+    compileOnly "io.jsonwebtoken:jjwt-api:${rootProject.ext.jjwtVersion}"
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${rootProject.ext.jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${rootProject.ext.jjwtVersion}"
 
     annotationProcessor 'org.hibernate:hibernate-jpamodelgen'
 }

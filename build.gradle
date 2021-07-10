@@ -2,7 +2,7 @@ import java.nio.charset.StandardCharsets
 
 plugins {
     id 'java'
-    id 'com.diffplug.spotless' version '5.12.5'
+    id 'com.diffplug.spotless' version '5.14.1'
 }
 
 spotless {
@@ -22,4 +22,9 @@ spotless {
 
 allprojects {
     group 'se.ifmo.blos'
+}
+
+ext {
+    jjwtVersion = '0.11.2'
+    openapiVersion = '1.5.9'
 }
