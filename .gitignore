@@ -45,3 +45,6 @@ db/
 ### MISC ###
 HELP.md
 *report*
+**/transaction-logs
+**.jar
+**/postgres_data
