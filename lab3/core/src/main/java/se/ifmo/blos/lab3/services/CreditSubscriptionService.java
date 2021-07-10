@@ -31,7 +31,8 @@ public class CreditSubscriptionService {
   private final JavaMailSender mailSender;
 
   @Transactional
-  public void createSubscription(final Long creditManagerId) throws ResourceNotFoundException, ResourceAlreadyExistsException {
+  public void createSubscription(final Long creditManagerId)
+      throws ResourceNotFoundException, ResourceAlreadyExistsException {
     final var creditManager =
         userRepository
             .findById(creditManagerId)
